@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block block_body %}
+<div class="margins2 top center">
+	{% if user.is_authenticated %}
+  <p>{{user.first_name}}  {{ user.last_name }} </p>
+  {% endif %}
+  {{ query_string }}
+  {% if latestGameList %}
+  {% for game in latestGameList %}
+  <li>
+    <div class="well">
+      {% if game.image %}
+      <div class="sideXside">
+        <img src="{{ game.image.url }}"  height="100" width="100"/>
+      </div>
+      {% endif %}
+      <a  href="/posts/{{ game.id }}/">{{ game.gameName }}</a> <br/>
+      Console: {{ game.console }} <br/>
+      Price: ${{ game.price }} <br/>
+      Posted: {{ game.date|timesince}} ago <br/>
+      <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
+      {% if game.author.user == request.user %}
+      <form  method="get" action="/posts/editPosts/{{game.id}}/">
+        {% csrf_token %}
+        <input class="btn btn-warning" type="submit" name="Edit" value="Edit" />
+      </form>
+      {% endif %}
+    </div>
+</li>
+{% endfor %}
+{% else %}
+<p>No games are available.</p>
+{% endif %}
+</div>
+{% endblock %}

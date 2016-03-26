@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block block_body %}
+{% load widget_tweaks %}
+
+<div class="margins top center">
+	<div class="col-md-6">
+		{% if edit %}
+		<h3>Edit Profile</h3>
+		{% else %}
+		<h3>Register</h3>
+
+		{% endif %}
+		{{ formUser.errors }}
+		{{ formProfile.errors }}
+		{% if error_message %}
+		<p>This email has already been registered</p>
+	<!--{% elif passwordError %}
+	<p>Passwords did not match</p>-->
+	{% endif %} 
+	{% if not edit %}
+	<a href="../login/">Already a member? Login here!</a>
+	{% endif %}
+	<form id="register_form" method="post" action="" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div>
+			First Name:
+			<br/>
+			{{formUser.first_name|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Last Name:
+			<br/>
+			{{formUser.last_name|add_class:"form-control"}}
+			<br/>
+		</div>
+		{% if not edit %}
+		<div>
+			Email:
+			<br/>
+			{{formUser.email|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Password:
+			<br/>
+			{{formUser.password|add_class:"form-control"}}
+			<br/>
+		</div>
+		{% endif %}
+		<!-- <div>
+			Password(Again):
+			<br/>
+				{{formUser.password2}}
+			<br/>
+		</div> -->
+		<div>
+			Body:
+			<br/>
+			{{formProfile.body|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Birthdate:
+			<br/>
+			{{formProfile.birthDate|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div class="col-xs-3">
+			Gender:
+			<br/>
+			{{formProfile.gender|add_class:"form-control"}}
+			<br/>
+		</div>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<div>
+			City:
+			<br/>
+			{{formProfile.city|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Country:
+			<br/>
+			{{formProfile.country|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Address:
+			<br/>
+			{{formProfile.address|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Postal Code:
+			<br/>
+			{{formProfile.postalCode|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Phone Number:
+			<br/>
+			{{formProfile.phoneNumber|add_class:"form-control"}}
+			<br/>
+		</div>
+		<div>
+			Upload Image: <br/><br/>
+			{% if profile.image %}
+			Current Image
+			<div>
+
+				<img src="{{ profile.image.url }}"  height="{{height}}" width="{{width}}"/>
+			</div>
+			{% endif %}
+			{{formProfile.image}}
+			<br/>
+		</div>
+		{% if edit %}
+		<input type="submit" class="btn btn-primary" name="submit" value="Edit" />
+		{% else %}
+		<input type="submit" class="btn btn-primary" name="submit" value="Register" />
+		{% endif %}
+	</form>
+</div>
+</div>
+{% endblock %}
