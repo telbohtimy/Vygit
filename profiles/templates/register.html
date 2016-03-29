@@ -15,7 +15,7 @@
 		{% if error_message %}
 		<p>This email has already been registered</p>
 		{% endif %}
-		{% ifr passwordError %}
+		{% if passwordError %}
 		<p>Passwords did not match</p>
 		{% endif %} 
 	{% if not edit %}

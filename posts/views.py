@@ -9,7 +9,6 @@ from django.db.models import Q
 from django.utils import timezone
 import re
 
-
 # Create your views here.
 def index(request):
 	latestGameList = Post.objects.order_by('-date')[:5]

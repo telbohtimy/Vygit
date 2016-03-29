@@ -42,3 +42,4 @@ class Reviews(models.Model):
     reviewed = models.ForeignKey(User, editable=False, related_name='reviewed')
     ratings = models.CharField(max_length=3, blank=False, choices=RATINGS)
     date=models.DateTimeField('date posted')
+

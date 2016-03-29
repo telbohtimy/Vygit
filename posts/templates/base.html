@@ -30,7 +30,7 @@
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					{% if user.is_authenticated%}
-					<li><a href="/profiles/1/">{{user.first_name}}</a></li>
+					<li><a href="/profiles/{{user.id}}/">{{user.first_name}}</a></li>
 					<li><a href="/posts/postForm/">Create Post</a></li>
 					<li><a href="/profiles/logout">Logout</a></li>
 					{% else %}
