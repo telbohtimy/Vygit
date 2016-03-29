@@ -38,10 +38,10 @@ def register(request):
         formProfile=ProfileForm(data=request.POST)
         if formUser.is_valid() and formProfile.is_valid():
             user = formUser.save()
-            #password1=formUser.cleaned_data['password']
+            password1=formUser.cleaned_data['password']
             #password2=formUser.cleaned_data['password2']
             #if(password1!=password2):
-                #return render(request, 'register.html', {'passwordError':True})
+             #   return render(request, 'register.html', {'passwordError':'passwordError'})
             user.set_password(user.password)
             user.is_active = False
             user.first_name=formUser.cleaned_data['first_name']

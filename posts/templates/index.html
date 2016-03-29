@@ -20,9 +20,13 @@
       Posted: {{ game.date|timesince}} ago <br/>
       <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
       {% if game.author.user == request.user %}
-      <form  method="get" action="/posts/editPosts/{{game.id}}/">
+      <form  class="btnSide" method="get" action="/posts/editPosts/{{game.id}}/">
         {% csrf_token %}
         <input class="btn btn-warning" type="submit" name="Edit" value="Edit" />
+      </form>
+      <form class="btnSide" method="post" action="/posts/delete/{{game.id}}/">
+        {% csrf_token %}
+        <input class="btn btn-danger" type="submit" name="delete" value="Delete" />
       </form>
       {% endif %}
     </div>

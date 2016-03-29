@@ -1,3 +1,7 @@
+.btnSide{
+    display: inline-block;
+    vertical-align: top;
+}
 .sideXside{
     float:right;
     margin-left:5px;

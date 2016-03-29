@@ -145,3 +145,6 @@ def search(request):
     	query_string="failed"
     context={ 'query_string': query_string, 'latestGameList': latestGameList}
     return render(request,'index.html', context)
+def deletePost(request,id):
+	 Post.objects.filter(Q(id=id)).delete()
+	 return HttpResponseRedirect('/')

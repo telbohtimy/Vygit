@@ -14,9 +14,10 @@
 		{{ formProfile.errors }}
 		{% if error_message %}
 		<p>This email has already been registered</p>
-	<!--{% elif passwordError %}
-	<p>Passwords did not match</p>-->
-	{% endif %} 
+		{% endif %}
+		{% ifr passwordError %}
+		<p>Passwords did not match</p>
+		{% endif %} 
 	{% if not edit %}
 	<a href="../login/">Already a member? Login here!</a>
 	{% endif %}
@@ -47,13 +48,13 @@
 			{{formUser.password|add_class:"form-control"}}
 			<br/>
 		</div>
-		{% endif %}
-		<!-- <div>
+		<!--<div>
 			Password(Again):
 			<br/>
-				{{formUser.password2}}
+				{{formUser.password2|add_class:"form-control"}}
 			<br/>
-		</div> -->
+		</div>-->
+		{% endif %} 
 		<div>
 			Body:
 			<br/>
