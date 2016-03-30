@@ -41,7 +41,8 @@
 	<li class="divider">{{ review.ratings }}/5.0
 		<br/>
 		<a href="/profiles/{{ reviewerProfile.id }}/">{{ review.reviewer }}</a>
-		<span style="Display:block;width:950px;word-wrap:break-word;">{{review.body}}</span>
+		<span class="textWrap">{{review.body}}</span>
+		{{ review.date|timesince}} ago 
 	</li>
 	{% endfor %}
 </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 {% load static %}
+{% load getProfile %}
 <html>
 <head>
 	<title>Vygit</title>
@@ -30,7 +31,7 @@
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					{% if user.is_authenticated%}
-					<li><a href="/profiles/{{user.id}}/">{{user.first_name}}</a></li>
+					<li><a href="/profiles/{{user|getProfile}}/">{{user.first_name}}</a></li>
 					<li><a href="/posts/postForm/">Create Post</a></li>
 					<li><a href="/profiles/logout">Logout</a></li>
 					{% else %}
@@ -43,8 +44,13 @@
 	</nav>
 	{% block block_body %}
 	{% endblock %}
-<!--<div class="bottom">
+<!-- <div class="bottom">
 	<p>Copyright © Tarek El-Bohtimy 2016 </p>
-</div>-->
+</div> -->
+<!-- <footer class="footer">
+      <div class="container bottom">
+        <p >Copyright © Tarek El-Bohtimy 2016</p>
+      </div>
+    </footer> -->
 </body>
 </html>

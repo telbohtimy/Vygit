@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block block_body %}
 <div class="margins2 top center">
+
 	{% if user.is_authenticated %}
   <p>{{user.first_name}}  {{ user.last_name }} </p>
   {% endif %}

@@ -91,7 +91,7 @@ def authorPage(request, id):
         reviewer=request.user
         reviewed=authorPage.user
 
-        reviewerProfile=Profile.objects.get(user=reviewer)
+        reviewerProfile=Profile.objects.get(user=reviewed)
         if request.method=='POST':
             if reviewer==reviewed:
                 return HttpResponseRedirect('/profiles/'+str(id)+'/')
