@@ -119,7 +119,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_PATH = os.path.join(BASE_DIR, 'wsgi','static')#os.path.abspath(os.path.join(BASE_DIR,'static'))
+STATIC_ROOT = os.path.join(BASE_DIR, 'wsgi','static')#os.path.abspath(os.path.join(BASE_DIR,'static'))
 
 STATICFILES_DIRS = (
     #STATIC_PATH,
