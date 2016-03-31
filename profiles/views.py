@@ -159,4 +159,6 @@ def editProfile(request,id):
 
 def scaleImage(factor, width):
     scale=int(width/factor)
+    if scale==0:
+        return 1
     return 1/scale

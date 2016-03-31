@@ -109,6 +109,8 @@ def editPost(request,id):
 
 def scaleImage(factor, width):
     scale=int(width/factor)
+    if scale==0:
+    	return 1
     return 1/scale
 
 def normalize_query(query_string, findterms=re.compile(r'"([^"]+)"|(\S+)').findall,normspace=re.compile(r'\s{2,}').sub):
