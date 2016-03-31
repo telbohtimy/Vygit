@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block block_body %}	
+{% load widget_tweaks %}
+<div class="margins2 top center">
+    <form  id="post_form" method="post" action="" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div>
+		Game Name:
+		</br>
+			{{form.gameName|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		Console:
+		</br>
+			{{form.console|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		Description:
+		</br>
+			{{form.description|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		Condition:
+		</br>
+			{{form.condition|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		Price:
+		</br>
+			${{form.price|add_class:"form-control"}}
+		</br>
+	</div>
+		Upload Image: <br/><br/>
+    	{% if post.image %}
+        	Current Image:
+        	<div>
+				<img src="{{ post.image.url }}"  height="{{height}}" width="{{width}}"/>
+			</div>
+    	{% endif %}
+    	{{form.image}}
+		<br/>
+	{% if edit %}
+	<input class="btn btn-success" type="submit" name="submit" value="Edit" />
+	{% else %}
+	<input class="btn btn-success" type="submit" name="submit" value="Post" />
+	{% endif %}
+	</form>
+</div>
+{% endblock %}

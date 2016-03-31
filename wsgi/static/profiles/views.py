@@ -1,0 +1,162 @@
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.contrib.auth.models import User
+from profiles.forms import UserForm, ProfileForm, EditProfile, EditUser, ReviewForm
+from profiles.models import Profile, Reviews
+from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
+from django.db.models import Q
+from django.utils import timezone
+
+# Create your views here.
+def loginUser(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            #if user.is_active:
+            login(request, user)
+            return HttpResponseRedirect('/')
+        #else:
+            #return HttpResponse("This user has not been enabled by the admin yet.<br/><a href=\"/login/\">Login</a>")
+        else:
+            return render(request, 'login.html', {"error_message":"error_message"})
+    else:
+        return render(request, 'login.html', {},  RequestContext(request))
+
+def register(request):
+    '''
+    TO DO:
+    Authenticate email
+    '''
+    if request.method == 'POST':
+        formUser = UserForm(data=request.POST)
+        formProfile=ProfileForm(data=request.POST)
+        if formUser.is_valid() and formProfile.is_valid():
+            user = formUser.save()
+            password1=formUser.cleaned_data['password']
+            #password2=formUser.cleaned_data['password2']
+            #if(password1!=password2):
+             #   return render(request, 'register.html', {'passwordError':'passwordError'})
+            user.set_password(user.password)
+            user.is_active = False
+            user.first_name=formUser.cleaned_data['first_name']
+            user.last_name=formUser.cleaned_data['last_name']
+            user.email=formUser.cleaned_data['email']
+            user.username=formUser.cleaned_data['email']
+            if User.objects.filter(username = user.username).exists():
+                return render(request, 'register.html', {'error_message':'error_message'})
+            body=formProfile.cleaned_data['body']
+            birthDate=formProfile.cleaned_data['birthDate']
+            gender=formProfile.cleaned_data['gender']
+            city=formProfile.cleaned_data['city']
+            country=formProfile.cleaned_data['country']
+            address=formProfile.cleaned_data['address']
+            postalCode=formProfile.cleaned_data['postalCode']
+            phoneNumber=formProfile.cleaned_data['phoneNumber']
+            try:
+                image = request.FILES['image']
+            except:
+                image=""
+            user.save()
+            newProfile=Profile(user=user,body=body,birthDate=birthDate,gender=gender,city=city,address=address,postalCode=postalCode,phoneNumber=phoneNumber,country=country,image=image)
+            newProfile.save()
+            return HttpResponseRedirect('/profiles/login')
+    else:
+        formUser = UserForm()
+        formProfile=ProfileForm()
+    return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile})
+
+
+def logoutUser(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
+def authorPage(request, id):
+    try:
+        authorPage=Profile.objects.get(pk=id)
+        if authorPage.image:
+            scale=scaleImage(500, authorPage.image.width)
+            width=scale*authorPage.image.width
+            height=scale*authorPage.image.height
+        else:
+            width=0
+            height=0
+        ReviewList = Reviews.objects.filter(Q(reviewed=authorPage.user)).order_by('-date')
+
+        reviewer=request.user
+        reviewed=authorPage.user
+
+        reviewerProfile=Profile.objects.get(user=reviewed)
+        if request.method=='POST':
+            if reviewer==reviewed:
+                return HttpResponseRedirect('/profiles/'+str(id)+'/')
+            reviewForm=ReviewForm(data=request.POST)
+            if reviewForm.is_valid():
+                body=reviewForm.cleaned_data['body']
+                rating=reviewForm.cleaned_data['ratings']
+                date=timezone.now()
+                newReview=Reviews(reviewer=reviewer,reviewed=reviewed,body=body,ratings=rating,date=date)
+                newReview.save()
+        else:
+            reviewForm=ReviewForm()
+    except Profile.DoesNotExist:
+        raise Http404("This profile does not exist")
+    return render(request,"author.html",{"authorPage":authorPage,'reviewForm': reviewForm, 'ReviewList':ReviewList,'reviewerProfile':reviewerProfile,'width':width,'height':height})
+
+
+@login_required
+def editProfile(request,id):
+    try:
+        profile=Profile.objects.get(pk=id)
+        currentUser=profile.user
+        if profile.image:
+            scale=scaleImage(200, profile.image.width)
+            width=scale*profile.image.width
+            height=scale*profile.image.height
+        else:
+            width=0
+            height=0
+        if(currentUser!=request.user):
+            return HttpResponseRedirect('/')
+        if request.method == 'POST':
+            formProfile=EditProfile(instance=profile,data=request.POST)
+            formUser = EditUser(instance=currentUser,data=request.POST)
+            if formUser.is_valid() and formProfile.is_valid():
+                profile.user.first_name=formUser.cleaned_data['first_name']
+                profile.user.last_name=formUser.cleaned_data['last_name']
+                profile.body=formProfile.cleaned_data['body']
+                profile.birthDate=formProfile.cleaned_data['birthDate']
+                profile.gender=formProfile.cleaned_data['gender']
+                profile.city=formProfile.cleaned_data['city']
+                profile.country=formProfile.cleaned_data['country']
+                profile.address=formProfile.cleaned_data['address']
+                profile.postalCode=formProfile.cleaned_data['postalCode']
+                profile.phoneNumber=formProfile.cleaned_data['phoneNumber']
+                newclear = request.POST.get('clear')
+                try:
+                    image = request.FILES['image']
+                    profile.image=image
+                except:
+                    if (profile.image == None):
+                        profile.image=""
+                    elif (newclear == "on"):
+                        profile.image=""
+                profile.user.save()
+                profile.save()
+                return HttpResponseRedirect('/profiles/'+str(id)+'/')
+        else:
+            formProfile=EditProfile(instance=profile)
+            formUser = EditUser(instance=currentUser)
+    except Profile.DoesNotExist:
+        raise Http404("This profile does not exist")
+    return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile,'edit':'edit','profile':profile,'width':width,'height':height})
+
+
+def scaleImage(factor, width):
+    scale=int(width/factor)
+    return 1/scale
