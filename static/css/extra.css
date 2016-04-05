@@ -39,6 +39,9 @@
 .center{
     padding:1px;
 }
+.red{
+    color:red;
+}
 li {
     list-style-type: none;
 }

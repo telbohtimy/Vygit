@@ -14,8 +14,8 @@ class Profile(models.Model):
     city=models.CharField(max_length=128,blank=False)
     country=models.CharField(max_length=128,blank=False)
     address=models.CharField(max_length=128,blank=False)
-    postalCode=models.CharField(max_length=6,blank=False)
-    phoneNumber=models.IntegerField(blank=False)
+    postalCode=models.CharField(max_length=7,blank=False)
+    phoneNumber=models.CharField(max_length=30,blank=False)
 
     def get_image_path(self):
         return self.image.path

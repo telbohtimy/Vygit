@@ -30,8 +30,7 @@ def gamePage(request, id):
 	return render(request,"details.html",{"gamePage":gamePage,'width':width,'height':height})
 
 @login_required
-def posts(request):#Add a price
-
+def posts(request):
 	if request.method == 'POST':
 		form = postForm(data=request.POST)
 		if form.is_valid():
@@ -43,6 +42,7 @@ def posts(request):#Add a price
 			price=form.cleaned_data['price']
 			currentUser=request.user
 			author=Profile.objects.get(user=currentUser)
+
 			try:
 				image = request.FILES['image']
 			except:
@@ -51,7 +51,6 @@ def posts(request):#Add a price
 			newPost.save()
 			return HttpResponseRedirect('/posts/')
 	else:
-
 		form = postForm()
 
 	return render(request, 'postForm.html', {'form': form})
@@ -143,7 +142,7 @@ def search(request):
         
         latestGameList = Post.objects.filter(entry_query).order_by('-date')
     else:
-    	query_string="failed"
+    	query_string=""
     context={ 'query_string': query_string, 'latestGameList': latestGameList}
     return render(request,'index.html', context)
 def deletePost(request,id):

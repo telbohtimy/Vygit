@@ -17,7 +17,7 @@ class Post(models.Model):
 	date=models.DateTimeField('date posted')
 	condition=models.CharField(max_length=32,choices=CONDITION)
 	image=models.ImageField(upload_to='media/post_images',blank=True)
-	price=models.IntegerField(blank=False)
+	price=models.DecimalField(max_digits=8,decimal_places=2,blank=False)
 
 	def get_image_path(self):
 		return self.image.path

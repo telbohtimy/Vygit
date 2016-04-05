@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% block block_body %}
 {% load widget_tweaks %}
+<script>
+function isNumberKey(evt)
+{
+  var charCode = (evt.which) ? evt.which : event.keyCode;
+ console.log(charCode);
+    if (charCode != 46 && charCode != 45 && charCode > 31
+    && (charCode < 48 || charCode > 57))
+     return false;
 
+  return true;
+}
+</script>
 <div class="margins top center container">
 	<div class="col-md-6">
 		{% if edit %}
@@ -10,8 +21,8 @@
 		<h3>Register</h3>
 
 		{% endif %}
-		{{ formUser.errors }}
-		{{ formProfile.errors }}
+		{{ formUser.errors|add_class:"red" }}
+		{{ formProfile.errors|add_class:"red" }}
 		{% if error_message %}
 		<p>This email has already been registered</p>
 		{% endif %}
@@ -58,13 +69,13 @@
 		<div>
 			Body:
 			<br/>
-			{{formProfile.body|add_class:"form-control"}}
+			{{formProfile.body|add_class:"form-control"|attr:"placeholder:What do you want people to know about you..."}}
 			<br/>
 		</div>
 		<div>
 			Birthdate:
 			<br/>
-			{{formProfile.birthDate|add_class:"form-control"}}
+			{{formProfile.birthDate|add_class:"form-control"|attr:"placeholder:YYYY-MM-DD"}}
 			<br/>
 		</div>
 		<div class="col-xs-3">
@@ -105,7 +116,7 @@
 		<div>
 			Phone Number:
 			<br/>
-			{{formProfile.phoneNumber|add_class:"form-control"}}
+			{{formProfile.phoneNumber|add_class:"form-control"|attr:"onkeypress:return isNumberKey(event);"}}
 			<br/>
 		</div>
 		<div>

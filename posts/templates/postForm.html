@@ -2,6 +2,9 @@
 {% block block_body %}	
 {% load widget_tweaks %}
 <div class="margins2 top center">
+	{% if form.price.errors %}
+		<p class="red"> Game price too high </p>
+	{% endif %}
     <form  id="post_form" method="post" action="" enctype="multipart/form-data">
 	{% csrf_token %}
 	<div>
