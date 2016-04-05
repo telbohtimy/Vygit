@@ -90,8 +90,6 @@ def authorPage(request, id):
 
         reviewer=request.user
         reviewed=authorPage.user
-
-        reviewerProfile=Profile.objects.get(user=reviewer)
         if request.method=='POST':
             if reviewer==reviewed:
                 return HttpResponseRedirect('/profiles/'+str(id)+'/')
@@ -106,7 +104,7 @@ def authorPage(request, id):
             reviewForm=ReviewForm()
     except Profile.DoesNotExist:
         raise Http404("This profile does not exist")
-    return render(request,"author.html",{"authorPage":authorPage,'reviewForm': reviewForm, 'ReviewList':ReviewList,'reviewerProfile':reviewerProfile,'width':width,'height':height})
+    return render(request,"author.html",{"authorPage":authorPage,'reviewForm': reviewForm, 'ReviewList':ReviewList,'width':width,'height':height})
 
 
 @login_required
