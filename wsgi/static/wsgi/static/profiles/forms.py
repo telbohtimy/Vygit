@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Reviews
+from .models import Profile
 from django.forms import extras
 from django.contrib.auth.models import User
 from django.forms.widgets import FileInput, CheckboxInput
@@ -50,6 +50,7 @@ class ProfileForm(forms.ModelForm):
         fields = ("body", "birthDate","gender","city","country","address","postalCode","phoneNumber","image")
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        
 
 
 class EditUser(forms.ModelForm):
@@ -64,9 +65,6 @@ class EditUser(forms.ModelForm):
             self.fields["first_name"].initial = user.first_name
             self.fields["last_name"].initial = user.last_name
 
-            # self.fields['first_name'].widget.attrs['class'] = 'form-control'
-            # self.fields['last_name'].widget.attrs['class'] = 'form-control'
-
 class EditProfile(forms.ModelForm):
     class Meta:
         model=Profile
@@ -77,14 +75,6 @@ class EditProfile(forms.ModelForm):
         def __init__(self,*args,**kwargs):
             #self.profile=profile
             super(EditProfile,self).__init__(*args, **kwargs)
-            # self.fields['body'].widget.attrs['class'] = 'form-control'
-            # self.fields['birthDate'].widget.attrs['class'] = 'form-control'
-            # self.fields['gender'].widget.attrs['class'] = 'form-control'
-            # self.fields['city'].widget.attrs['class'] = 'form-control'
-            # self.fields['country'].widget.attrs['class'] = 'form-control' 
-            # self.fields['address'].widget.attrs['class'] = 'form-control'
-            # self.fields['postalCode'].widget.attrs['class'] = 'form-control'
-            # self.fields['phoneNumber'].widget.attrs['class'] = 'form-control'
 
             self.fields["body"].initial=profile.body
             self.fields["birthDate"].initial=profile.birthDate
@@ -95,9 +85,3 @@ class EditProfile(forms.ModelForm):
             self.fields["postalCode"].initial=profile.postalCode
             self.fields["phoneNumber"].initial=profile.phoneNumber
 
-class ReviewForm(forms.ModelForm):
-    class Meta:
-        model = Reviews
-        fields = ("body", "ratings")
-    def __init__(self, *args, **kwargs):
-        super(ReviewForm, self).__init__(*args, **kwargs)

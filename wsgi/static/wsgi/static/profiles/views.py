@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib.auth.models import User
-from profiles.forms import UserForm, ProfileForm, EditProfile, EditUser, ReviewForm
-from profiles.models import Profile, Reviews
+from profiles.forms import UserForm, ProfileForm, EditProfile, EditUser
+from profiles.models import Profile
+from review.models import Review
+from review.forms import ReviewForm
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.db.models import Q
@@ -80,18 +82,20 @@ def authorPage(request, id):
     try:
         authorPage=Profile.objects.get(pk=id)
         if authorPage.image:
-            scale=scaleImage(500, authorPage.image.width)
+            scale=scaleImage(400, authorPage.image.height)
             width=scale*authorPage.image.width
             height=scale*authorPage.image.height
         else:
             width=0
             height=0
-        ReviewList = Reviews.objects.filter(Q(reviewed=authorPage.user)).order_by('-date')
+        ReviewList = Review.objects.filter(Q(reviewed=authorPage)).order_by('-date')
 
-        reviewer=request.user
-        reviewed=authorPage.user
-
-        reviewerProfile=Profile.objects.get(user=reviewed)
+        if request.user.is_authenticated():
+            reviewer=Profile.objects.get(user=request.user)
+        reviewed=authorPage
+        # flag=''
+        # if Review.objects.filter(reviewer = reviewer).exists():
+        #     flag='flag'
         if request.method=='POST':
             if reviewer==reviewed:
                 return HttpResponseRedirect('/profiles/'+str(id)+'/')
@@ -100,13 +104,13 @@ def authorPage(request, id):
                 body=reviewForm.cleaned_data['body']
                 rating=reviewForm.cleaned_data['ratings']
                 date=timezone.now()
-                newReview=Reviews(reviewer=reviewer,reviewed=reviewed,body=body,ratings=rating,date=date)
+                newReview=Review(reviewer=reviewer,reviewed=reviewed,body=body,ratings=rating,date=date)
                 newReview.save()
         else:
             reviewForm=ReviewForm()
     except Profile.DoesNotExist:
         raise Http404("This profile does not exist")
-    return render(request,"author.html",{"authorPage":authorPage,'reviewForm': reviewForm, 'ReviewList':ReviewList,'reviewerProfile':reviewerProfile,'width':width,'height':height})
+    return render(request,"author.html",{"authorPage":authorPage,'reviewForm': reviewForm, 'ReviewList':ReviewList,'width':width,'height':height})
 
 
 @login_required
@@ -159,4 +163,6 @@ def editProfile(request,id):
 
 def scaleImage(factor, width):
     scale=int(width/factor)
+    if scale==0:
+        return 1
     return 1/scale

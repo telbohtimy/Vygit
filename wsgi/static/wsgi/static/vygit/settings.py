@@ -25,7 +25,7 @@ SECRET_KEY = '58xlgwe2*ib+b@jrhg$wpj75#r023v__m5-o#!7s7-ocz6fh#&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".herokuapp.com"]
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'posts',
     'profiles',
+    'review',
     'widget_tweaks'
 ]
 

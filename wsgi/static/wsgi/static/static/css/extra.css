@@ -35,11 +35,33 @@
     }
 .top{
     margin-top:80px;
+    margin-bottom:10px;
 }
 .center{
     padding:1px;
+}
+.red{
+    color:red;
+}
+footer {
+    background-color: #00bc8c;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+    overflow:hidden;
 }
 li {
     list-style-type: none;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 100px; /* bottom = footer height */
+    padding: 25px;
+}

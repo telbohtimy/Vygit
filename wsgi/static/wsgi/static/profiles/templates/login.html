@@ -19,7 +19,7 @@ $(document).ready(function(){
 
 	<h3>Login</h3>
 	{% if error_message %}
-	<p>Username or Password is incorrect</p>
+	<p class='red'>Username or Password is incorrect</p>
 	{% endif %}
 	<form id="login_form" method="post" action="">
 		{% csrf_token %}

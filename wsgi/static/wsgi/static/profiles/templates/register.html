@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% block block_body %}
 {% load widget_tweaks %}
+<script>
+function isNumberKey(evt)
+{
+  var charCode = (evt.which) ? evt.which : event.keyCode;
+ console.log(charCode);
+    if (charCode != 46 && charCode != 45 && charCode > 31
+    && (charCode < 48 || charCode > 57))
+     return false;
 
+  return true;
+}
+</script>
 <div class="margins top center container">
 	<div class="col-md-6">
 		{% if edit %}
@@ -10,8 +21,6 @@
 		<h3>Register</h3>
 
 		{% endif %}
-		{{ formUser.errors }}
-		{{ formProfile.errors }}
 		{% if error_message %}
 		<p>This email has already been registered</p>
 		{% endif %}
@@ -24,12 +33,18 @@
 	<form id="register_form" method="post" action="" enctype="multipart/form-data">
 		{% csrf_token %}
 		<div>
+			{% if formUser.first_name.errors %}
+				<p class="red"> Please enter your first name </p>
+			{% endif %}
 			First Name:
 			<br/>
 			{{formUser.first_name|add_class:"form-control"}}
 			<br/>
 		</div>
 		<div>
+			{% if formUser.last_name.errors %}
+				<p class="red"> Please enter your last name </p>
+			{% endif %}
 			Last Name:
 			<br/>
 			{{formUser.last_name|add_class:"form-control"}}
@@ -37,12 +52,18 @@
 		</div>
 		{% if not edit %}
 		<div>
+			{% if formUser.email.errors %}
+				<p class="red"> Please enter your email </p>
+			{% endif %}
 			Email:
 			<br/>
 			{{formUser.email|add_class:"form-control"}}
 			<br/>
 		</div>
 		<div>
+			{% if formUser.password.errors %}
+				<p class="red"> Please enter your desired password </p>
+			{% endif %}
 			Password:
 			<br/>
 			{{formUser.password|add_class:"form-control"}}
@@ -58,54 +79,70 @@
 		<div>
 			Body:
 			<br/>
-			{{formProfile.body|add_class:"form-control"}}
+			{{formProfile.body|add_class:"form-control"|attr:"placeholder:What do you want people to know about you..."}}
 			<br/>
 		</div>
 		<div>
+			{% if formProfile.birthDate.errors %}
+				<p class="red"> Please enter your Birthday (YYYY-MM-DD) </p>
+			{% endif %}
 			Birthdate:
 			<br/>
-			{{formProfile.birthDate|add_class:"form-control"}}
+			{{formProfile.birthDate|add_class:"form-control"|attr:"placeholder:YYYY-MM-DD"}}
 			<br/>
 		</div>
-		<div class="col-xs-3">
+		<div >
+			{% if formProfile.gender.errors %}
+				<p class="red"> Please enter your gender </p>
+			{% endif %}
 			Gender:
 			<br/>
 			{{formProfile.gender|add_class:"form-control"}}
 			<br/>
 		</div>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
 		<div>
+			{% if formProfile.city.errors %}
+				<p class="red"> Please enter your current city </p>
+			{% endif %}
 			City:
 			<br/>
 			{{formProfile.city|add_class:"form-control"}}
 			<br/>
 		</div>
 		<div>
+			{% if formProfile.country.errors %}
+				<p class="red"> Please enter your current country </p>
+			{% endif %}
 			Country:
 			<br/>
 			{{formProfile.country|add_class:"form-control"}}
 			<br/>
 		</div>
 		<div>
+			{% if formProfile.address.errors %}
+				<p class="red"> Please enter your current address </p>
+			{% endif %}
 			Address:
 			<br/>
 			{{formProfile.address|add_class:"form-control"}}
 			<br/>
 		</div>
 		<div>
+			{% if formProfile.postalCode.errors %}
+				<p class="red"> Please enter your current postal code</p>
+			{% endif %}
 			Postal Code:
 			<br/>
 			{{formProfile.postalCode|add_class:"form-control"}}
 			<br/>
 		</div>
 		<div>
+			{% if formProfile.phoneNumber.errors %}
+				<p class="red"> Please enter your phone number</p>
+			{% endif %}
 			Phone Number:
 			<br/>
-			{{formProfile.phoneNumber|add_class:"form-control"}}
+			{{formProfile.phoneNumber|add_class:"form-control"|attr:"onkeypress:return isNumberKey(event);"}}
 			<br/>
 		</div>
 		<div>
