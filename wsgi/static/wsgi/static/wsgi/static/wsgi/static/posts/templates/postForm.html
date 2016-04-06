@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block block_body %}	
+{% load widget_tweaks %}
+<div class="margins2 top center">
+    <form  id="post_form" method="post" action="" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div>
+		{% if form.gameName.errors %}
+			<p class="red"> Please say what game it is </p>
+		{% endif %}
+		Game Name:
+		</br>
+			{{form.gameName|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		{% if form.console.errors %}
+			<p class="red"> Please say what console the game is for </p>
+		{% endif %}
+		Console:
+		</br>
+			{{form.console|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		Description:
+		</br>
+			{{form.description|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		{% if form.condition.errors %}
+			<p class="red"> Please state the games condition </p>
+		{% endif %}
+		Condition:
+		</br>
+			{{form.condition|add_class:"form-control"}}
+		</br>
+	</div>
+	<div>
+		{% if form.price.errors %}
+			<p class="red"> Game price not valid </p>
+		{% endif %}
+		Price:
+		</br>
+			${{form.price|add_class:"form-control"}}
+		</br>
+	</div>
+		Upload Image: <br/><br/>
+    	{% if post.image %}
+        	Current Image:
+        	<div>
+				<img src="{{ post.image.url }}"  height="{{height}}" width="{{width}}"/>
+			</div>
+    	{% endif %}
+    	{{form.image}}
+		<br/>
+	{% if edit %}
+	<input class="btn btn-success" type="submit" name="submit" value="Edit" />
+	{% else %}
+	<input class="btn btn-success" type="submit" name="submit" value="Post" />
+	{% endif %}
+	</form>
+</div>
+{% endblock %}

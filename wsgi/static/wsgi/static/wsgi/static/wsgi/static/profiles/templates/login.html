@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block block_body %}
+{% load static %}
+<script>
+$(document).ready(function(){
+		var images = ['A.jpg', 'B.jpg', 'C.jpg', 'D.jpg', 'E.jpg', 'F.jpg', 'G.jpg', 'H.jpg', 'I.jpg', 'J.jpg'];
+		var pic= "images/"+images[Math.floor(Math.random() *images.length)];
+		var url='{% static "%s" %}';
+		url=url.replace('%s',pic);
+   		$("body").css("background-image", 'url('+ url + ')');
+   		$("body").css("background-size", '100% auto');
+
+	});
+</script>
+
+
+<div class="margins top center container">
+<div class="col-md-6">
+
+	<h3>Login</h3>
+	{% if error_message %}
+	<p class='red'>Username or Password is incorrect</p>
+	{% endif %}
+	<form id="login_form" method="post" action="">
+		{% csrf_token %}
+		<input type="text" class="form-control" name="username" placeholder="Email" />
+		<br/> 
+		<input type="password" class="form-control" name="password" placeholder="Password" />
+		<br/>
+		<input class="btn btn-primary" type="submit" value="Login" />
+	</form>
+	<a href="../register/">Or register here!</a>
+</div>
+</div>
+{% endblock %}

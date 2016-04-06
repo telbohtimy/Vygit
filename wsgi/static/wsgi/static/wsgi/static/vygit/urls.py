@@ -22,6 +22,7 @@ from posts import views as post_views #this is to avoid conflicts with other vie
 urlpatterns = [ 
     url(r'^$', post_views.index),                
 	url(r'^posts/',include('posts.urls')),
+    url(r'^review/',include('review.urls')),
 	url(r'^profiles/',include('profiles.urls')),
     url(r'^admin/', admin.site.urls),
     

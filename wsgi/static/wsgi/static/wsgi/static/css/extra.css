@@ -43,6 +43,9 @@
 .red{
     color:red;
 }
+#review_form{
+    display: none;
+}
 footer {
     background-color: #00bc8c;
     position: absolute;

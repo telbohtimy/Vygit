@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block block_body %}
 {% load widget_tweaks %}
+<script>
+$(document).ready(function(){
+	$("#make").click(function() {
+    	$("#review_form").css("display", "initial");
+    	$("#make").css("display", "none");
+	});
+
+	});
+</script>
 <div class="margins2 top center">
 	{% if authorPage.image %}
             <div>
@@ -24,7 +33,8 @@
 		<input class="btn btn-warning btnPos2" type="submit" name="Edit" value="Edit Profile" />
 		{% endif %}
 	</form>
-	{% if user.is_authenticated and authorPage.user != request.user%}
+	{% if user.is_authenticated and authorPage.user != request.user and not flag %}
+	<button class="btn btn-warning"type="button" id="make">Make a Review</button> <br/>
 	<form id="review_form" method="post" action="">
 		{% csrf_token %}
 		Rating:
@@ -44,7 +54,13 @@
 		<br/>
 		<a href="/profiles/{{ review.reviewer.id }}/">{{ review.reviewer.user.first_name}} {{review.reviewer.user.last_name}}</a>
 		<span class="textWrap">{{review.body}}</span>
-		{{ review.date|timesince}} ago 
+		{{ review.date|timesince}} ago
+		{% if review.reviewer.user == request.user %}
+      	<form method="post" action="/review/delete/{{review.id}}/">
+        	{% csrf_token %}
+        	<input class="btn btn-danger" type="submit" name="delete" value="Delete" />
+      	</form>
+      	{% endif %} 
 	</li>
 	{% endfor %}
 </div>
