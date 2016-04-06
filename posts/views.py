@@ -19,7 +19,7 @@ def gamePage(request, id):
 	try:
 		gamePage=Post.objects.get(pk=id)
 		if gamePage.image:
-			scale=scaleImage(500, gamePage.image.width)
+			scale=scaleImage(400, gamePage.image.height)
 			width=scale*gamePage.image.width
 			height=scale*gamePage.image.height
 		else:

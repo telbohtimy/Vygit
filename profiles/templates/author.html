@@ -24,7 +24,7 @@
 		<input class="btn btn-warning btnPos2" type="submit" name="Edit" value="Edit Profile" />
 		{% endif %}
 	</form>
-	{% if user.is_authenticated and authorPage.user != request.user %}
+	{% if user.is_authenticated and authorPage.user != request.user%}
 	<form id="review_form" method="post" action="">
 		{% csrf_token %}
 		Rating:
@@ -42,7 +42,7 @@
 	{% for review in ReviewList %}
 	<li class="divider">{{ review.ratings }}/5.0
 		<br/>
-		<a href="/profiles/{{ review.reviewer.id }}/">{{ review.reviewer }}</a>
+		<a href="/profiles/{{ review.reviewer.id }}/">{{ review.reviewer.user.first_name}} {{review.reviewer.user.last_name}}</a>
 		<span class="textWrap">{{review.body}}</span>
 		{{ review.date|timesince}} ago 
 	</li>

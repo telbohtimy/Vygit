@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Reviews
+from .models import Profile
 from django.forms import extras
 from django.contrib.auth.models import User
 from django.forms.widgets import FileInput, CheckboxInput
@@ -85,12 +85,3 @@ class EditProfile(forms.ModelForm):
             self.fields["postalCode"].initial=profile.postalCode
             self.fields["phoneNumber"].initial=profile.phoneNumber
 
-
-
-
-class ReviewForm(forms.ModelForm):
-    class Meta:
-        model = Reviews
-        fields = ("body", "ratings")
-    def __init__(self, *args, **kwargs):
-        super(ReviewForm, self).__init__(*args, **kwargs)

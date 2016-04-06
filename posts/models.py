@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from profiles.models import Profile
+from django.core.validators import MinValueValidator
+from decimal import Decimal
+
 # Create your models here.
 class Post(models.Model):
 	CONDITION=(('New','New'),
@@ -11,13 +14,13 @@ class Post(models.Model):
 			('Bad','Bad'),
 		)
 	gameName=models.CharField(max_length=128,blank=False)
-	console=models.CharField(max_length=128,blank=True)
+	console=models.CharField(max_length=128,blank=False)
 	description=models.TextField(max_length=2048)
 	author=models.ForeignKey(Profile)
 	date=models.DateTimeField('date posted')
-	condition=models.CharField(max_length=32,choices=CONDITION)
+	condition=models.CharField(max_length=32,choices=CONDITION,blank=False)
 	image=models.ImageField(upload_to='media/post_images',blank=True)
-	price=models.DecimalField(max_digits=8,decimal_places=2,blank=False)
+	price=models.DecimalField(max_digits=8,decimal_places=2,blank=False, validators=[MinValueValidator(Decimal('0.01'))])
 
 	def get_image_path(self):
 		return self.image.path
