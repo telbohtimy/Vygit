@@ -90,7 +90,8 @@ def authorPage(request, id):
             height=0
         ReviewList = Review.objects.filter(Q(reviewed=authorPage)).order_by('-date')
 
-        reviewer=Profile.objects.get(user=request.user)
+        if request.user.is_authenticated():
+            reviewer=Profile.objects.get(user=request.user)
         reviewed=authorPage
         # flag=''
         # if Review.objects.filter(reviewer = reviewer).exists():
