@@ -146,5 +146,8 @@ def search(request):
     context={ 'query_string': query_string, 'latestGameList': latestGameList}
     return render(request,'index.html', context)
 def deletePost(request,id):
-	 Post.objects.filter(Q(id=id)).delete()
-	 return HttpResponseRedirect('/')
+	post=Post.objects.get(pk=id)
+	if post.author.user != request.user:
+		HttpResponseRedirect('/')
+	Post.objects.filter(Q(id=id)).delete()
+	return HttpResponseRedirect('/')

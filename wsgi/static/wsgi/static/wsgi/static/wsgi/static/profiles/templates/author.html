@@ -7,7 +7,6 @@ $(document).ready(function(){
     	$("#review_form").css("display", "initial");
     	$("#make").css("display", "none");
 	});
-
 	});
 </script>
 <div class="margins2 top center">
@@ -45,7 +44,7 @@ $(document).ready(function(){
 		<br/>
 		{{reviewForm.body|add_class:"form-control"}}
 		<br/>
-		<input class="btn btn-warning" type="submit" name="Review" value="Review" />
+		<input class="btn btn-warning" type="submit" id="review" name="Review" value="Review" />
 	</form>
 
 	{% endif %}

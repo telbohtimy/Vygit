@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block block_body %}
+<div class="margins2 top center">
+	{% if gamePage.image %}
+	<div>
+		<img src="{{ gamePage.image.url }}"  height="{{height}}" width="{{width}}"/>
+	</div>
+	{% endif %}
+	<h2>{{gamePage.gameName}}</h2>
+	Console:{{ gamePage.console }}<br/>
+	Description:<span class="textWrap">{{gamePage.description}}</span><br/>
+	Condition: {{gamePage.condition}}<br/>
+	Price: {{gamePage.price}}<br/>
+	Seller:<a style="color:teal" href="/profiles/{{ gamePage.author.id }}/">{{ gamePage.author.user.first_name }} {{gamePage.author.user.last_name }}</a><br/>
+	{% if gamePage.author.user == request.user %}
+	<form  method="get" action="/posts/editPosts/{{gamePage.id}}/">
+		{% csrf_token %}
+		<input class="btn btn-warning btnPos1" type="submit" name="Edit" value="Edit" />
+	</form>
+	{% endif %}
+</div>
+{% endblock %}

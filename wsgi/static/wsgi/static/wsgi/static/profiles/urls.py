@@ -9,4 +9,5 @@ urlpatterns = [
 	url(r'^logout/$', views.logoutUser, name='logout'),
 	url(r'^(?P<id>[0-9]+)/$', views.authorPage, name='authorPage'),
 	url(r'^editProfile/(?P<id>[0-9]+)/$', views.editProfile, name='editProfile'),
+	url(r'^about/$', views.aboutView, name='about'),
 ] 

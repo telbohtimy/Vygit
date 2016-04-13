@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -10,5 +11,4 @@ urlpatterns = [
     url(r'^editPosts/(?P<id>[0-9]+)/$', views.editPost, name='editPost'),
     url(r'^searchResults/$', views.search, name='searchResults'),
     url(r'^delete/(?P<id>[0-9]+)/$', views.deletePost, name='deletePost'),
-
 ]

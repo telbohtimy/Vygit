@@ -21,12 +21,8 @@ function isNumberKey(evt)
 		<h3>Register</h3>
 
 		{% endif %}
-		{% if error_message %}
-		<p>This email has already been registered</p>
-		{% endif %}
-		{% if passwordError %}
-		<p>Passwords did not match</p>
-		{% endif %} 
+		
+
 	{% if not edit %}
 	<a href="../login/">Already a member? Login here!</a>
 	{% endif %}
@@ -55,6 +51,9 @@ function isNumberKey(evt)
 			{% if formUser.email.errors %}
 				<p class="red"> Please enter your email </p>
 			{% endif %}
+			{% if error_message %}
+				<p class="red">This email has already been registered</p>
+			{% endif %}
 			Email:
 			<br/>
 			{{formUser.email|add_class:"form-control"}}
@@ -64,17 +63,19 @@ function isNumberKey(evt)
 			{% if formUser.password.errors %}
 				<p class="red"> Please enter your desired password </p>
 			{% endif %}
+			{% if passwordError %}
+				<p class="red"> Passwords did not match </p>
+			{% endif %}
 			Password:
 			<br/>
 			{{formUser.password|add_class:"form-control"}}
 			<br/>
 		</div>
-		<!--<div>
+		<div>
 			Password(Again):
+			<input type="password" class="form-control" name="password2"/>
 			<br/>
-				{{formUser.password2|add_class:"form-control"}}
-			<br/>
-		</div>-->
+		</div>
 		{% endif %} 
 		<div>
 			Body:

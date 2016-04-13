@@ -46,14 +46,18 @@
 #review_form{
     display: none;
 }
+.about{
+    color:black;
+}
 footer {
     background-color: #00bc8c;
     position: absolute;
     left: 0;
     bottom: 0;
-    height: 30px;
+    height: 50px;
     width: 100%;
     overflow:hidden;
+    text-align: center;
 }
 li {
     list-style-type: none;

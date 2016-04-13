@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,render_to_response
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib.auth.models import User
@@ -39,19 +39,23 @@ def register(request):
         formUser = UserForm(data=request.POST)
         formProfile=ProfileForm(data=request.POST)
         if formUser.is_valid() and formProfile.is_valid():
-            user = formUser.save()
             password1=formUser.cleaned_data['password']
-            #password2=formUser.cleaned_data['password2']
-            #if(password1!=password2):
-             #   return render(request, 'register.html', {'passwordError':'passwordError'})
+            password2=request.POST.get('password2')
+            first_name=formUser.cleaned_data['first_name']
+            last_name=formUser.cleaned_data['last_name']
+            email=formUser.cleaned_data['email']
+            if(password1!=password2):
+                return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile,'passwordError':'passwordError'})
+            if User.objects.filter(username = email).exists():
+                return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile, 'error_message':'error_message'})
+            user = formUser.save()
             user.set_password(user.password)
             user.is_active = False
-            user.first_name=formUser.cleaned_data['first_name']
-            user.last_name=formUser.cleaned_data['last_name']
-            user.email=formUser.cleaned_data['email']
-            user.username=formUser.cleaned_data['email']
-            if User.objects.filter(username = user.username).exists():
-                return render(request, 'register.html', {'error_message':'error_message'})
+            user.first_name=first_name
+            user.last_name=last_name
+            user.email=email
+            user.username=email
+    
             body=formProfile.cleaned_data['body']
             birthDate=formProfile.cleaned_data['birthDate']
             gender=formProfile.cleaned_data['gender']
@@ -165,3 +169,6 @@ def scaleImage(factor, width):
     if scale==0:
         return 1
     return 1/scale
+
+def aboutView(request):
+   return render_to_response('about.html')
