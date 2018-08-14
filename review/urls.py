@@ -1,8 +1,9 @@
-from django.conf.urls import url
+from django.urls import include, path
+
 
 from . import views
 
 urlpatterns = [
-    url(r'^delete/(?P<id>[0-9]+)/$', views.deleteReview, name='deleteReview'),
+    path('delete/<int:id>/', views.deleteReview, name='deleteReview'),
 
 ]
