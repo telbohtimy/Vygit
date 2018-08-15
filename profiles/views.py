@@ -48,13 +48,9 @@ def register(request):
                 return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile,'passwordError':'passwordError'})
             if User.objects.filter(username = email).exists():
                 return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile, 'error_message':'error_message'})
-            user = formUser.save()
-            user.set_password(user.password)
-            user.is_active = False
-            user.first_name=first_name
-            user.last_name=last_name
-            user.email=email
-            user.username=email
+            user = User.objects.create_user(username = email, email = email, password = password1, first_name = first_name, last_name = last_name, is_active=True)           
+            #user.is_active = False #Later
+            
     
             body=formProfile.cleaned_data['body']
             birthDate=formProfile.cleaned_data['birthDate']
