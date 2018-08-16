@@ -4,10 +4,10 @@
 <script>
 $(document).ready(function(){
 		var images = ['A.jpg', 'B.jpg', 'C.jpg', 'D.jpg', 'E.jpg', 'F.jpg', 'G.jpg', 'H.jpg', 'I.jpg', 'J.jpg'];
-		var pic= "images/"+images[Math.floor(Math.random() *images.length)];
-		var url='{% static "%s" %}';
-		url=url.replace('%s',pic);
-   		$("body").css("background-image", 'url('+ url + ')');
+		var pic= images[Math.floor(Math.random() *images.length)];
+		var url='{% static "/images/A.jpg" %}';
+		url=url.replace("A.jpg",pic);
+		$("body").css("background-image", 'url('+ url + ')');
    		$("body").css("background-size", '100% auto');
    		$("body").css("background-repeat", 'no-repeat');
 
