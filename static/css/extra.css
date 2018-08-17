@@ -49,8 +49,20 @@
 .about{
     color:black;
 }
+.float-right{
+    float:right;
+}
+#login-header{
+    color: white;
+}
+a{
+    color:blue;
+}
+a:hover{
+    color:green;
+}
 footer {
-    background-color: #00bc8c;
+    background-color: #000000;
     position: absolute;
     left: 0;
     bottom: 0;
@@ -70,5 +82,4 @@ html {
 
 body {
     margin: 0 0 100px; /* bottom = footer height */
-    padding: 25px;
 }
