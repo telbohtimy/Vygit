@@ -55,6 +55,14 @@
 #login-header{
     color: white;
 }
+.edit-delete{
+    text-decoration: underline;
+    font-weight:bold;
+    color:black;
+}
+.edit-delete:hover{
+    color:blue;
+}
 a{
     color:blue;
 }
