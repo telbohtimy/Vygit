@@ -6,7 +6,7 @@ class Profile(models.Model):
     GENDER_CHOICES = (('M', 'Male'),
                       ('F', 'Female'))
 
-    user = models.OneToOneField(User, editable=False)
+    user = models.OneToOneField(User, editable=False, on_delete=models.CASCADE)
     body = models.TextField(max_length=2048, blank=True)
     birthDate = models.DateField('birthDate',null=True, blank=False)
     gender = models.CharField(max_length=1, blank=False, choices=GENDER_CHOICES)

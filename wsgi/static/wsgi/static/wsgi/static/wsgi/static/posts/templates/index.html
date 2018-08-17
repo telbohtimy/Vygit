@@ -8,30 +8,27 @@
   {{ query_string }}
   {% if latestGameList %}
   {% for game in latestGameList %}
-  <li>
-    <div class="well">
-      {% if game.image %}
+  <div class="card border-dark mb-3">
+  <div class="card-body">
+    {% if game.image %}
       <div class="sideXside">
         <img src="{{ game.image.url }}"  height="100" width="100"/>
       </div>
-      {% endif %}
-      <a  href="/posts/{{ game.id }}/">{{ game.gameName }}</a> <br/>
+    {% endif %}
+    <h4 class="card-title"><a href="/posts/{{ game.id }}/">{{ game.gameName }}</a> <br/></h4>
+    <p class="card-text">
       Console: {{ game.console }} <br/>
       Price: ${{ game.price }} <br/>
       Posted: {{ game.date|timesince}} ago <br/>
       <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
       {% if game.author.user == request.user %}
-      <form  class="btnSide" method="get" action="/posts/editPosts/{{game.id}}/">
-        {% csrf_token %}
-        <input class="btn btn-warning" type="submit" name="Edit" value="Edit" />
-      </form>
-      <form class="btnSide" method="post" action="/posts/delete/{{game.id}}/">
-        {% csrf_token %}
-        <input class="btn btn-danger" type="submit" name="delete" value="Delete" />
-      </form>
+
+        <a class="edit-delete" href="/posts/editPosts/{{game.id}}/">Edit</a> 
+        <a class="edit-delete" href="/posts/delete/{{game.id}}/">Delete</a><br/>
       {% endif %}
-    </div>
-</li>
+    </p>
+  </div>
+</div>
 {% endfor %}
 {% else %}
 <p>No games are available.</p>

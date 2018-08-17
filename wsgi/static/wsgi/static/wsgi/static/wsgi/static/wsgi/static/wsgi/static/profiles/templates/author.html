@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block block_body %}
+{% load widget_tweaks %}
+<script>
+$(document).ready(function(){
+	$("#make").click(function() {
+    	$("#review_form").css("display", "initial");
+    	$("#make").css("display", "none");
+	});
+	});
+</script>
+<div class="margins2 top center">
+	{% if authorPage.image %}
+            <div>
+                <img src="{{ authorPage.image.url }}"  height="{{height}}" width="{{width}}"/>
+            </div>
+            {% endif %}
+	<h3>{{ authorPage.user.first_name }} {{ authorPage.user.last_name }}<br/></h3>
+	<h5>Contact Information</h5>
+	Email: {{ authorPage.user.email }}  Phone Number: {{authorPage.phoneNumber}}
+	{% if authorPage.body %}
+	<h5>About the seller</h5>
+	<span class="textWrap">{{authorPage.body}}</span>
+	{% endif %}
+	<form method="post" action="/posts/allPosts/{{authorPage.id}}/">
+		{% csrf_token %}
+		<input class="btn btn-danger btnPos1" type="submit" name="Posts" value="Seller Posts" />
+	</form>
+	<form method="get" action="/profiles/editProfile/{{authorPage.id}}/">
+		{% csrf_token %}
+		{% if authorPage.user == request.user %}
+		<input class="btn btn-warning btnPos2" type="submit" name="Edit" value="Edit Profile" />
+		{% endif %}
+	</form>
+	{% if user.is_authenticated and authorPage.user != request.user and not flag %}
+	<button class="btn btn-warning"type="button" id="make">Make a Review</button> <br/>
+	<form id="review_form" method="post" action="">
+		{% csrf_token %}
+		Rating:
+		<br/>
+		{{reviewForm.ratings|add_class:"form-control"}} 
+		<br/>
+		Comment:
+		<br/>
+		{{reviewForm.body|add_class:"form-control"}}
+		<br/>
+		<input class="btn btn-warning" type="submit" id="review" name="Review" value="Review" />
+	</form>
+
+	{% endif %}
+	{% for review in ReviewList %}
+	<li class="divider">{{ review.ratings }}/5.0
+		<br/>
+		<a href="/profiles/{{ review.reviewer.id }}/">{{ review.reviewer.user.first_name}} {{review.reviewer.user.last_name}}</a>
+		<span class="textWrap">{{review.body}}</span>
+		{{ review.date|timesince}} ago
+		{% if review.reviewer.user == request.user %}
+      	<form method="post" action="/review/delete/{{review.id}}/">
+        	{% csrf_token %}
+        	<input class="btn btn-danger" type="submit" name="delete" value="Delete" />
+      	</form>
+      	{% endif %} 
+	</li>
+	{% endfor %}
+</div>
+{% endblock %}

@@ -15,7 +15,7 @@ class Review(models.Model):
             ('4.5', '4.5'),
             ('5.0', '5.0'))
     body = models.TextField(max_length=500, blank=True)
-    reviewer = models.ForeignKey(Profile, related_name='reviewer')
-    reviewed = models.ForeignKey(Profile, related_name='reviewed')
+    reviewer = models.ForeignKey(Profile, related_name='reviewer', on_delete=models.CASCADE)
+    reviewed = models.ForeignKey(Profile, related_name='reviewed', on_delete=models.CASCADE)
     ratings = models.CharField(max_length=3, blank=False, choices=RATINGS)
     date=models.DateTimeField('date posted')

@@ -1,6 +1,6 @@
 from django import forms
 from .models import Profile
-from django.forms import extras
+#from django.forms import extras 
 from django.contrib.auth.models import User
 from django.forms.widgets import FileInput, CheckboxInput
 from django.utils.html import format_html

@@ -16,7 +16,7 @@ class Post(models.Model):
 	gameName=models.CharField(max_length=128,blank=False)
 	console=models.CharField(max_length=128,blank=False)
 	description=models.TextField(max_length=2048)
-	author=models.ForeignKey(Profile)
+	author=models.ForeignKey(Profile, on_delete=models.CASCADE)
 	date=models.DateTimeField('date posted')
 	condition=models.CharField(max_length=32,choices=CONDITION,blank=False)
 	image=models.ImageField(upload_to='media/post_images',blank=True)
