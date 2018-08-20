@@ -6,23 +6,25 @@
     float:right;
     margin-left:5px;
 }
-
+.sideXside-left{
+    float:left;
+    margin-right:50px;
+}
 .divider{
    border-top: 1px white solid;
 }
 .textWrap{
     display:block;
-    width:950px;
     word-wrap:break-word;
 }
 .btnPos1{
-    position:fixed; 
-    top:80px;
+    position:absolute; 
+    top:110px;
     right:75px;
 }
 .btnPos2{
-    position:fixed; 
-    top:140px;
+    position:absolute; 
+    top:175px;
     right:75px;
 }
 .margins{
@@ -63,6 +65,9 @@
 .edit-delete:hover{
     color:blue;
 }
+.no-overflow{
+    overflow: hidden;
+}
 a{
     color:blue;
 }
@@ -82,12 +87,10 @@ footer {
 li {
     list-style-type: none;
 }
-
 html {
     position: relative;
     min-height: 100%;
 }
-
 body {
     margin: 0 0 100px; /* bottom = footer height */
 }
