@@ -1,3 +1,6 @@
+.no-overflow{
+    overflow: hidden;
+}
 .btnSide{
     display: inline-block;
     vertical-align: top;
@@ -18,12 +21,12 @@
     word-wrap:break-word;
 }
 .btnPos1{
-    position:absolute; 
+    position:fixed; 
     top:110px;
     right:75px;
 }
 .btnPos2{
-    position:absolute; 
+    position:fixed; 
     top:175px;
     right:75px;
 }
@@ -64,9 +67,6 @@
 }
 .edit-delete:hover{
     color:blue;
-}
-.no-overflow{
-    overflow: hidden;
 }
 a{
     color:blue;

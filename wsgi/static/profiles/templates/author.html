@@ -11,27 +11,33 @@ $(document).ready(function(){
 </script>
 <div class="margins2 top center">
 	{% if authorPage.image %}
-            <div>
-                <img src="{{ authorPage.image.url }}"  height="{{height}}" width="{{width}}"/>
-            </div>
-            {% endif %}
-	<h3>{{ authorPage.user.first_name }} {{ authorPage.user.last_name }}<br/></h3>
-	<h5>Contact Information</h5>
-	Email: {{ authorPage.user.email }}  Phone Number: {{authorPage.phoneNumber}}
-	{% if authorPage.body %}
-	<h5>About the seller</h5>
-	<span class="textWrap">{{authorPage.body}}</span>
-	{% endif %}
-	<form method="post" action="/posts/allPosts/{{authorPage.id}}/">
-		{% csrf_token %}
-		<input class="btn btn-danger btnPos1" type="submit" name="Posts" value="Seller Posts" />
-	</form>
-	<form method="get" action="/profiles/editProfile/{{authorPage.id}}/">
-		{% csrf_token %}
-		{% if authorPage.user == request.user %}
-		<input class="btn btn-warning btnPos2" type="submit" name="Edit" value="Edit Profile" />
+        <div>
+             <img class="sideXside-left" src="{{ authorPage.image.url }}"  width="200em"/>
+        </div>
+    {% endif %}
+    <div class="no-overflow">
+		<h3>{{ authorPage.user.first_name }} {{ authorPage.user.last_name }}<br/></h3>
+		<h5>Contact Information</h5>
+		<p><h6>Email: </h6>{{ authorPage.user.email }}</p>  
+		<p><h6>Phone Number: </h6>{{authorPage.phoneNumber}}</p>
+		{% if authorPage.body %}
+		<h5>About the seller</h5>
+		<p><span class="textWrap">{{authorPage.body}}</span></p>
 		{% endif %}
-	</form>
+		<form method="post" action="/posts/allPosts/{{authorPage.id}}/">
+			{% csrf_token %}
+			<input class="btn btn-danger btnPos1" type="submit" name="Posts" value="Seller Posts" />
+		</form>
+		<form method="get" action="/profiles/editProfile/{{authorPage.id}}/">
+			{% csrf_token %}
+			{% if authorPage.user == request.user %}
+			<input class="btn btn-warning btnPos2" type="submit" name="Edit" value="Edit Profile" />
+			{% endif %}
+		</form>
+	</div>
+
+
+
 	{% if user.is_authenticated and authorPage.user != request.user and not flag %}
 	<button class="btn btn-warning"type="button" id="make">Make a Review</button> <br/>
 	<form id="review_form" method="post" action="">
@@ -46,19 +52,19 @@ $(document).ready(function(){
 		<br/>
 		<input class="btn btn-warning" type="submit" id="review" name="Review" value="Review" />
 	</form>
+	{% endif %}
 
+	{% if ReviewList %}
+		<h5>Reviews</h5>
 	{% endif %}
 	{% for review in ReviewList %}
 	<li class="divider">{{ review.ratings }}/5.0
 		<br/>
 		<a href="/profiles/{{ review.reviewer.id }}/">{{ review.reviewer.user.first_name}} {{review.reviewer.user.last_name}}</a>
 		<span class="textWrap">{{review.body}}</span>
-		{{ review.date|timesince}} ago
+		<p>{{ review.date|timesince}} ago </p>
 		{% if review.reviewer.user == request.user %}
-      	<form method="post" action="/review/delete/{{review.id}}/">
-        	{% csrf_token %}
-        	<input class="btn btn-danger" type="submit" name="delete" value="Delete" />
-      	</form>
+		<a class="edit-delete" href="/review/delete/{{review.id}}/">Delete</a>
       	{% endif %} 
 	</li>
 	{% endfor %}

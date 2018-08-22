@@ -15,17 +15,16 @@
 }
 .textWrap{
     display:block;
-    width:950px;
     word-wrap:break-word;
 }
 .btnPos1{
-    position:fixed; 
-    top:125px;
+    position:absolute; 
+    top:110px;
     right:75px;
 }
 .btnPos2{
-    position:fixed; 
-    top:150px;
+    position:absolute; 
+    top:175px;
     right:75px;
 }
 .margins{
@@ -65,6 +64,9 @@
 }
 .edit-delete:hover{
     color:blue;
+}
+.no-overflow{
+    overflow: hidden;
 }
 a{
     color:blue;
