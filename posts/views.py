@@ -7,13 +7,16 @@ from profiles.models import Profile
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import re
 
 # Create your views here.
 def index(request):
 	latestGameList = Post.objects.order_by('-date')[:5]
-	context={'latestGameList': latestGameList}
-	return render(request,'index.html', context)
+	paginator = Paginator(latestGameList, 4)
+	page = request.GET.get('page')
+	latestGameList = paginator.get_page(page)
+	return render(request,'index.html', {'latestGameList': latestGameList})
 
 def gamePage(request, id):
 	try:
