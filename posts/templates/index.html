@@ -1,5 +1,26 @@
 {% extends 'base.html' %}
 {% block block_body %}
+<!--<script>
+  $(document).ready(function(){
+    $("#sortOrder").change(function(){
+      var sortCriteria = $(this).find("option:selected").attr('value');
+      $.ajax({
+        url : "/", // the endpoint
+        type : "POST", // http method
+        data : {csrfmiddlewaretoken: "{{ csrf_token }}", sortOrder : sortCriteria }, // data sent with the post request
+        // handle a successful response
+        success : function(data) {
+            console.log(sortCriteria); 
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+      });
+    });
+  });
+</script>-->
+
 <div class="margins2 top center">
 
 	{% if user.is_authenticated %}
@@ -7,6 +28,12 @@
   {% endif %}
   {{ query_string }}
   {% if latestGameList %}
+  <!-- <select id = "sortOrder" class="form-control">
+    <option value="newest">Newest</option>
+    <option value="highestPrice">Highest Price</option>
+    <option value="lowestPrice">Lowest Price</option>
+  </select>
+  <br/> -->
   {% for game in latestGameList %}
   <div class="card border-dark mb-3">
   <div class="card-body">
@@ -22,7 +49,6 @@
       Posted: {{ game.date|timesince}} ago <br/>
       <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
       {% if game.author.user == request.user %}
-
         <a class="edit-delete" href="/posts/editPosts/{{game.id}}/">Edit</a> 
         <a class="edit-delete" href="/posts/delete/{{game.id}}/">Delete</a><br/>
       {% endif %}
