@@ -15,12 +15,15 @@ perPage = 5
 # Create your views here.
 def index(request):
 	latestGameList = Post.objects.order_by('-date')
-	# if request.method == 'POST':
-	# 	sortOrder = request.POST.get('sortOrder')
-	# 	if(sortOrder == "highestPrice"):
-	# 		latestGameList = Post.objects.order_by('-price')
-	# 	elif(sortOrder == "lowestPrice"):
-	# 		latestGameList = Post.objects.order_by('price')
+	sortOrder = request.GET.get('sortOrder')
+	if(sortOrder == "highestPrice"):
+		latestGameList = Post.objects.order_by('-price')
+		request.session["sortOrder"] = "highestPrice"
+	elif(sortOrder == "lowestPrice"):
+		latestGameList = Post.objects.order_by('price')
+		request.session["sortOrder"] = "lowestPrice"
+	else:
+		request.session["sortOrder"] = "newest"
 	paginator = Paginator(latestGameList, perPage)
 	page = request.GET.get('page')
 	latestGameList = paginator.get_page(page)
@@ -63,6 +66,15 @@ def myPosts(request,id):
 	try:
 		profile=Profile.objects.get(pk=id)
 		latestGameList = Post.objects.filter(Q(author=profile)).order_by('-date')
+		sortOrder = request.GET.get('sortOrder')
+		if(sortOrder == "highestPrice"):
+			latestGameList = Post.objects.filter(Q(author=profile)).order_by('-price')
+			request.session["sortOrder"] = "highestPrice"
+		elif(sortOrder == "lowestPrice"):
+			latestGameList = Post.objects.filter(Q(author=profile)).order_by('price')
+			request.session["sortOrder"] = "lowestPrice"
+		else:
+			request.session["sortOrder"] = "newest"
 		paginator = Paginator(latestGameList, perPage)
 		page = request.GET.get('page')
 		latestGameList = paginator.get_page(page)
@@ -134,6 +146,16 @@ def search(request):
         entry_query = get_query(query_string, ['description', 'gameName','console',])
         
         latestGameList = Post.objects.filter(entry_query).order_by('-date')
+       
+        sortOrder = request.GET.get('sortOrder')
+        if(sortOrder == "highestPrice"):
+        	latestGameList = Post.objects.filter(entry_query).order_by('-price')
+        	request.session["sortOrder"] = "highestPrice"
+        elif(sortOrder == "lowestPrice"):
+        	latestGameList = Post.objects.filter(entry_query).order_by('price') 
+        	request.session["sortOrder"] = "lowestPrice"
+        else:
+        	request.session["sortOrder"] = "newest"    
         paginator = Paginator(latestGameList, perPage)
         page = request.GET.get('page')
         latestGameList = paginator.get_page(page)

@@ -57,6 +57,12 @@
 .float-right{
     float:right;
 }
+.sidebar{
+    margin-top:10px;
+    padding-left:10px;
+    position: fixed;
+    float:left;
+}
 #login-header{
     color: white;
 }

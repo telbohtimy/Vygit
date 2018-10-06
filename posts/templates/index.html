@@ -1,25 +1,14 @@
 {% extends 'base.html' %}
 {% block block_body %}
-<!--<script>
-  $(document).ready(function(){
-    $("#sortOrder").change(function(){
-      var sortCriteria = $(this).find("option:selected").attr('value');
-      $.ajax({
-        url : "/", // the endpoint
-        type : "POST", // http method
-        data : {csrfmiddlewaretoken: "{{ csrf_token }}", sortOrder : sortCriteria }, // data sent with the post request
-        // handle a successful response
-        success : function(data) {
-            console.log(sortCriteria); 
-        },
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-      });
-    });
-  });
-</script>-->
+ <div class="form-group sidebar">
+  Sort By:
+  <br/>
+  <ul>
+    <li><a href="?sortOrder=newest&q={{query_string}}">New</a></li>
+    <li><a href="?sortOrder=lowestPrice&q={{query_string}}">Low</a></li>
+    <li><a href="?sortOrder=highestPrice&q={{query_string}}">High</a></li>
+  </ul>
+</div>
 
 <div class="margins2 top center">
 
@@ -28,57 +17,53 @@
   {% endif %}
   {{ query_string }}
   {% if latestGameList %}
-  <!-- <select id = "sortOrder" class="form-control">
-    <option value="newest">Newest</option>
-    <option value="highestPrice">Highest Price</option>
-    <option value="lowestPrice">Lowest Price</option>
-  </select>
-  <br/> -->
-  {% for game in latestGameList %}
-  <div class="card border-dark mb-3">
-  <div class="card-body">
-    {% if game.image %}
-      <div class="sideXside">
-        <img src="{{ game.image.url }}"  width="100em"/>
+  <div id = "gameList">
+    {% for game in latestGameList %}
+    <div class="card border-dark mb-3">
+      <div class="card-body">
+        {% if game.image %}
+          <div class="sideXside">
+            <img src="{{ game.image.url }}"  width="100em"/>
+          </div>
+        {% endif %}
+        <h4 class="card-title"><a href="/posts/{{ game.id }}/">{{ game.gameName }}</a> <br/></h4>
+        <p class="card-text">
+          Console: {{ game.console }} <br/>
+          Price: ${{ game.price }} <br/>
+          Posted: {{ game.date|timesince}} ago <br/>
+          <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
+          {% if game.author.user == request.user %}
+            <a class="edit-delete" href="/posts/editPosts/{{game.id}}/">Edit</a> 
+            <a class="edit-delete" href="/posts/delete/{{game.id}}/">Delete</a><br/>
+          {% endif %}
+        </p>
       </div>
-    {% endif %}
-    <h4 class="card-title"><a href="/posts/{{ game.id }}/">{{ game.gameName }}</a> <br/></h4>
-    <p class="card-text">
-      Console: {{ game.console }} <br/>
-      Price: ${{ game.price }} <br/>
-      Posted: {{ game.date|timesince}} ago <br/>
-      <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
-      {% if game.author.user == request.user %}
-        <a class="edit-delete" href="/posts/editPosts/{{game.id}}/">Edit</a> 
-        <a class="edit-delete" href="/posts/delete/{{game.id}}/">Delete</a><br/>
-      {% endif %}
-    </p>
+    </div>
+    {% endfor %}
   </div>
-</div>
-{% endfor %}
 <div>
   <ul class="pagination">
     {% if latestGameList.has_previous %}
       <li class="page-item">
-        <a class="page-link" href="?page=1">&laquo; 1</a>
+        <a class="page-link" href="?page=1&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">&laquo; 1</a>
       </li>
       {% if latestGameList.previous_page_number !=  1%}
         <li class="page-item">
-          <a class="page-link" href="?page={{ latestGameList.previous_page_number }}">{{ latestGameList.previous_page_number}}</a>
+          <a class="page-link" href="?page={{ latestGameList.previous_page_number }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.previous_page_number}}</a>
         </li>
       {%endif%}
     {%endif%}
     <li class="page-item active">
-       <a class="page-link" href="?page={{ latestGameList.number }}">{{ latestGameList.number }}  </a>
+       <a class="page-link" href="?page={{ latestGameList.number }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.number }}  </a>
     </li>
     {% if latestGameList.has_next %}
       {% if latestGameList.next_page_number !=  latestGameList.paginator.num_pages%}
         <li class="page-item">
-          <a class="page-link" href="?page={{ latestGameList.next_page_number }}">{{ latestGameList.next_page_number }}</a>
+          <a class="page-link" href="?page={{ latestGameList.next_page_number }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.next_page_number }}</a>
         </li>
       {% endif %}
       <li class="page-item">
-        <a class="page-link" href="?page={{ latestGameList.paginator.num_pages }}">{{ latestGameList.paginator.num_pages }} &raquo;</a>
+        <a class="page-link" href="?page={{ latestGameList.paginator.num_pages }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.paginator.num_pages }} &raquo;</a>
       </li>
     {% endif %}
   </ul>
