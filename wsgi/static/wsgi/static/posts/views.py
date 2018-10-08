@@ -7,27 +7,34 @@ from profiles.models import Profile
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import re
 
+
+perPage = 5
 # Create your views here.
 def index(request):
-	latestGameList = Post.objects.order_by('-date')[:5]
-	context={'latestGameList': latestGameList}
-	return render(request,'index.html', context)
+	latestGameList = Post.objects.order_by('-date')
+	sortOrder = request.GET.get('sortOrder')
+	if(sortOrder == "highestPrice"):
+		latestGameList = Post.objects.order_by('-price')
+		request.session["sortOrder"] = "highestPrice"
+	elif(sortOrder == "lowestPrice"):
+		latestGameList = Post.objects.order_by('price')
+		request.session["sortOrder"] = "lowestPrice"
+	else:
+		request.session["sortOrder"] = "newest"
+	paginator = Paginator(latestGameList, perPage)
+	page = request.GET.get('page')
+	latestGameList = paginator.get_page(page)
+	return render(request,'index.html', {'latestGameList': latestGameList})
 
 def gamePage(request, id):
 	try:
 		gamePage=Post.objects.get(pk=id)
-		if gamePage.image:
-			scale=scaleImage(400, gamePage.image.height)
-			width=scale*gamePage.image.width
-			height=scale*gamePage.image.height
-		else:
-			width=0
-			height=0
 	except Post.DoesNotExist:
 		raise Http404("This post does not exist")
-	return render(request,"details.html",{"gamePage":gamePage,'width':width,'height':height})
+	return render(request,"details.html",{"gamePage":gamePage})
 
 @login_required
 def posts(request):
@@ -59,23 +66,27 @@ def myPosts(request,id):
 	try:
 		profile=Profile.objects.get(pk=id)
 		latestGameList = Post.objects.filter(Q(author=profile)).order_by('-date')
-		context={'latestGameList': latestGameList}
+		sortOrder = request.GET.get('sortOrder')
+		if(sortOrder == "highestPrice"):
+			latestGameList = Post.objects.filter(Q(author=profile)).order_by('-price')
+			request.session["sortOrder"] = "highestPrice"
+		elif(sortOrder == "lowestPrice"):
+			latestGameList = Post.objects.filter(Q(author=profile)).order_by('price')
+			request.session["sortOrder"] = "lowestPrice"
+		else:
+			request.session["sortOrder"] = "newest"
+		paginator = Paginator(latestGameList, perPage)
+		page = request.GET.get('page')
+		latestGameList = paginator.get_page(page)
 	except Profile.DoesNotExist:
 		raise Http404("This profile does not exist")
-	return render(request,'index.html', context)
+	return render(request,'index.html', {'latestGameList': latestGameList})
 
 @login_required
 def editPost(request,id):
 	try:
 		post=Post.objects.get(pk=id)
 		profile=Profile.objects.get(user=request.user)
-		if post.image:
-			scale=scaleImage(200, post.image.width)
-			width=scale*post.image.width
-			height=scale*post.image.height
-		else:
-			width=0
-			height=0
 		if(post.author!=profile):
 			return HttpResponseRedirect('/posts/')
 		if request.method == 'POST':
@@ -86,6 +97,7 @@ def editPost(request,id):
 				post.description=form.cleaned_data['description']
 				post.console=form.cleaned_data['console']
 				post.price=form.cleaned_data['price']
+				post.dateUpdated=timezone.now()
 				newclear = request.POST.get('clear')
 				try:
 					image = request.FILES['image']
@@ -104,13 +116,7 @@ def editPost(request,id):
 		raise Http404("This post does not exist")
 
 
-	return render(request, 'postForm.html', {'form': form,'edit':'edit','post':post,'width':width,'height':height})
-
-def scaleImage(factor, width):
-    scale=int(width/factor)
-    if scale==0:
-    	return 1
-    return 1/scale
+	return render(request, 'postForm.html', {'form': form,'edit':'edit','post':post})
 
 def normalize_query(query_string, findterms=re.compile(r'"([^"]+)"|(\S+)').findall,normspace=re.compile(r'\s{2,}').sub):
 	return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)] 
@@ -138,13 +144,27 @@ def search(request):
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
         
-        entry_query = get_query(query_string, ['description', 'gameName',])
+        entry_query = get_query(query_string, ['description', 'gameName','console',])
         
         latestGameList = Post.objects.filter(entry_query).order_by('-date')
+       
+        sortOrder = request.GET.get('sortOrder')
+        if(sortOrder == "highestPrice"):
+        	latestGameList = Post.objects.filter(entry_query).order_by('-price')
+        	request.session["sortOrder"] = "highestPrice"
+        elif(sortOrder == "lowestPrice"):
+        	latestGameList = Post.objects.filter(entry_query).order_by('price') 
+        	request.session["sortOrder"] = "lowestPrice"
+        else:
+        	request.session["sortOrder"] = "newest"    
+        paginator = Paginator(latestGameList, perPage)
+        page = request.GET.get('page')
+        latestGameList = paginator.get_page(page)
     else:
     	query_string=""
     context={ 'query_string': query_string, 'latestGameList': latestGameList}
     return render(request,'index.html', context)
+
 def deletePost(request,id):
 	post=Post.objects.get(pk=id)
 	if post.author.user != request.user:

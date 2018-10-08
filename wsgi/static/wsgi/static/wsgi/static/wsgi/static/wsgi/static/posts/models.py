@@ -18,6 +18,7 @@ class Post(models.Model):
 	description=models.TextField(max_length=2048)
 	author=models.ForeignKey(Profile, on_delete=models.CASCADE)
 	date=models.DateTimeField('date posted')
+	dateUpdated = models.DateTimeField('date updated', blank = True, null = True)
 	condition=models.CharField(max_length=32,choices=CONDITION,blank=False)
 	image=models.ImageField(upload_to='media/post_images',blank=True)
 	price=models.DecimalField(max_digits=8,decimal_places=2,blank=False, validators=[MinValueValidator(Decimal('0.01'))])

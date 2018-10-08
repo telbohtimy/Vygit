@@ -1,35 +1,78 @@
 {% extends 'base.html' %}
 {% block block_body %}
+ <div class="form-group sidebar textWrap">
+  <h6>Sort By:</h6>
+  <ul>
+    <li><a href="?sortOrder=newest&q={{query_string}}">Newest Postings</a></li>
+    <li><a href="?sortOrder=lowestPrice&q={{query_string}}">Lowest Price</a></li>
+    <li><a href="?sortOrder=highestPrice&q={{query_string}}">Highest Price</a></li>
+  </ul>
+</div>
+
 <div class="margins2 top center">
 
 	{% if user.is_authenticated %}
   <p>{{user.first_name}}  {{ user.last_name }} </p>
   {% endif %}
-  {{ query_string }}
+  {% if query_string%}
+    <h6>Searched for: {{ query_string }}</h6>
+  {% endif %}
   {% if latestGameList %}
-  {% for game in latestGameList %}
-  <div class="card border-dark mb-3">
-  <div class="card-body">
-    {% if game.image %}
-      <div class="sideXside">
-        <img src="{{ game.image.url }}"  width="100em"/>
+  <div id = "gameList">
+    {% for game in latestGameList %}
+    <div class="card border-dark mb-3">
+      <div class="card-body">
+        {% if game.image %}
+          <div class="sideXside">
+            <img src="{{ game.image.url }}"  width="100em"/>
+          </div>
+        {% endif %}
+        <h4 class="card-title"><a href="/posts/{{ game.id }}/">{{ game.gameName }}</a> <br/></h4>
+        <p class="card-text">
+          Console: {{ game.console }} <br/>
+          Price: ${{ game.price }} <br/>
+          Condition: {{game.condition}}<br/>
+          Posted: {{ game.date|timesince}} ago <br/>
+          {% if game.dateUpdated %}
+            Post Updated: {{ game.dateUpdated|timesince}} ago <br/>
+          {% endif %}
+          <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
+          {% if game.author.user == request.user %}
+            <a class="edit-delete" href="/posts/editPosts/{{game.id}}/">Edit</a> 
+            <a class="edit-delete" href="/posts/delete/{{game.id}}/">Delete</a><br/>
+          {% endif %}
+        </p>
       </div>
-    {% endif %}
-    <h4 class="card-title"><a href="/posts/{{ game.id }}/">{{ game.gameName }}</a> <br/></h4>
-    <p class="card-text">
-      Console: {{ game.console }} <br/>
-      Price: ${{ game.price }} <br/>
-      Posted: {{ game.date|timesince}} ago <br/>
-      <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
-      {% if game.author.user == request.user %}
-
-        <a class="edit-delete" href="/posts/editPosts/{{game.id}}/">Edit</a> 
-        <a class="edit-delete" href="/posts/delete/{{game.id}}/">Delete</a><br/>
-      {% endif %}
-    </p>
+    </div>
+    {% endfor %}
   </div>
+<div>
+  <ul class="pagination">
+    {% if latestGameList.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">&laquo; 1</a>
+      </li>
+      {% if latestGameList.previous_page_number !=  1%}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ latestGameList.previous_page_number }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.previous_page_number}}</a>
+        </li>
+      {%endif%}
+    {%endif%}
+    <li class="page-item active">
+       <a class="page-link" href="?page={{ latestGameList.number }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.number }}  </a>
+    </li>
+    {% if latestGameList.has_next %}
+      {% if latestGameList.next_page_number !=  latestGameList.paginator.num_pages%}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ latestGameList.next_page_number }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.next_page_number }}</a>
+        </li>
+      {% endif %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ latestGameList.paginator.num_pages }}&sortOrder={{ request.session.sortOrder }}&q={{query_string}}">{{ latestGameList.paginator.num_pages }} &raquo;</a>
+      </li>
+    {% endif %}
+  </ul>
 </div>
-{% endfor %}
 {% else %}
 <p>No games are available.</p>
 {% endif %}
