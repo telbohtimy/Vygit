@@ -97,6 +97,7 @@ def editPost(request,id):
 				post.description=form.cleaned_data['description']
 				post.console=form.cleaned_data['console']
 				post.price=form.cleaned_data['price']
+				post.dateUpdated=timezone.now()
 				newclear = request.POST.get('clear')
 				try:
 					image = request.FILES['image']

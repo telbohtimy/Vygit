@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 {% block block_body %}
- <div class="form-group sidebar">
-  Sort By:
-  <br/>
+ <div class="form-group sidebar textWrap">
+  <h6>Sort By:</h6>
   <ul>
-    <li><a href="?sortOrder=newest&q={{query_string}}">New</a></li>
-    <li><a href="?sortOrder=lowestPrice&q={{query_string}}">Low</a></li>
-    <li><a href="?sortOrder=highestPrice&q={{query_string}}">High</a></li>
+    <li><a href="?sortOrder=newest&q={{query_string}}">Newest Postings</a></li>
+    <li><a href="?sortOrder=lowestPrice&q={{query_string}}">Lowest Price</a></li>
+    <li><a href="?sortOrder=highestPrice&q={{query_string}}">Highest Price</a></li>
   </ul>
 </div>
 
@@ -15,7 +14,9 @@
 	{% if user.is_authenticated %}
   <p>{{user.first_name}}  {{ user.last_name }} </p>
   {% endif %}
-  {{ query_string }}
+  {% if query_string%}
+    <h6>Searched for: {{ query_string }}</h6>
+  {% endif %}
   {% if latestGameList %}
   <div id = "gameList">
     {% for game in latestGameList %}
@@ -30,7 +31,11 @@
         <p class="card-text">
           Console: {{ game.console }} <br/>
           Price: ${{ game.price }} <br/>
+          Condition: {{game.condition}}<br/>
           Posted: {{ game.date|timesince}} ago <br/>
+          {% if game.dateUpdated %}
+            Post Updated: {{ game.dateUpdated|timesince}} ago <br/>
+          {% endif %}
           <a  href="/profiles/{{ game.author.id }}/">{{ game.author.user.first_name }} {{game.author.user.last_name }}</a><br/>
           {% if game.author.user == request.user %}
             <a class="edit-delete" href="/posts/editPosts/{{game.id}}/">Edit</a> 
