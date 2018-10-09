@@ -9,9 +9,9 @@ urlpatterns = [
     path('admin', admin.site.urls),                
     path('', post_views.index),
     path('profiles/', include('profiles.urls')),
+    path('profiles/', include('django.contrib.auth.urls')),
     path('posts/',include('posts.urls')),
     path('review/',include('review.urls')),
-    
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

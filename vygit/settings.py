@@ -62,7 +62,7 @@ ROOT_URLCONF = 'vygit.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'debug': DEBUG,
@@ -136,6 +136,8 @@ MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR,'media/'))
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 
 # Static files (CSS, JavaScript, Images)
