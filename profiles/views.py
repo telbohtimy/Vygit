@@ -117,13 +117,6 @@ def editProfile(request,id):
     try:
         profile=Profile.objects.get(pk=id)
         currentUser=profile.user
-        if profile.image:
-            scale=scaleImage(200, profile.image.width)
-            width=scale*profile.image.width
-            height=scale*profile.image.height
-        else:
-            width=0
-            height=0
         if(currentUser!=request.user):
             return HttpResponseRedirect('/')
         if request.method == 'POST':
@@ -157,14 +150,7 @@ def editProfile(request,id):
             formUser = EditUser(instance=currentUser)
     except Profile.DoesNotExist:
         raise Http404("This profile does not exist")
-    return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile,'edit':'edit','profile':profile,'width':width,'height':height})
-
-
-def scaleImage(factor, width):
-    scale=int(width/factor)
-    if scale==0:
-        return 1
-    return 1/scale
+    return render(request, 'register.html', {'formUser': formUser, 'formProfile':formProfile,'edit':'edit','profile':profile})
 
 def aboutView(request):
    return render_to_response('about.html')

@@ -4,7 +4,7 @@ from review.models import Review
 from django.http import HttpResponseRedirect
 
 # Create your views here.
-def deleteReview(request,id): #BROKEN NO ATTRIBUTE USER
+def deleteReview(request,id): 
 	review=Review.objects.get(pk=id)
 	idNumber=str(review.reviewed.id)
 	if review.reviewer.user!= request.user:

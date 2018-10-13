@@ -12,6 +12,7 @@ urlpatterns = [
     path('profiles/', include('django.contrib.auth.urls')),
     path('posts/',include('posts.urls')),
     path('review/',include('review.urls')),
+    #path('messages/', include('messaging.urls')),
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
