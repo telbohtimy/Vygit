@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block block_body %}	
+{% load widget_tweaks %}
+<div class="margins2 top center">
+   <p>Sending Message to: {{ name }}</p>
+   <form id="message_form" method="post" action="">
+		{% csrf_token %}
+		<p> Message </p>
+		<br/>
+			{{form.body|add_class:"form-control"}}
+		<br/>
+	<input type="submit" class="btn btn-primary" name="submit" value="Send" />
+	</form>
+</div>
+{% endblock %}

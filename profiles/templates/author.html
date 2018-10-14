@@ -34,6 +34,12 @@ $(document).ready(function(){
 			<input class="btn btn-warning btnPos2" type="submit" name="Edit" value="Edit Profile" />
 			{% endif %}
 		</form>
+		{% if user.is_authenticated and authorPage.user != request.user%}
+		<form method="post" action="/messages/createMessage/{{authorPage.id}}/">
+			{% csrf_token %}			
+			<input class="btn btn-info btnPos2" type="submit" name="Message" value="Message Seller" />
+		</form>
+		{% endif %}
 	
 
 

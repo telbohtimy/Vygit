@@ -19,6 +19,12 @@
 			<input class="btn btn-warning btnPos1" type="submit" name="Edit" value="Edit" />
 		</form>
 		{% endif %}
+		{% if user.is_authenticated and authorPage.user != request.user%}
+		<form method="post" action="/messages/createMessage/{{gamePage.author.id}}/">
+			{% csrf_token %}			
+			<input class="btn btn-info btnPos2" type="submit" name="Message" value="Message Seller" />
+		</form>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

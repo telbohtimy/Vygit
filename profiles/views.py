@@ -81,13 +81,6 @@ def logoutUser(request):
 def authorPage(request, id):
     try:
         authorPage=Profile.objects.get(pk=id)
-        if authorPage.image:
-            scale=scaleImage(400, authorPage.image.height)
-            width=scale*authorPage.image.width
-            height=scale*authorPage.image.height
-        else:
-            width=0
-            height=0
         ReviewList = Review.objects.filter(Q(reviewed=authorPage)).order_by('-date')
         reviewed=authorPage
         flag=''
@@ -109,7 +102,7 @@ def authorPage(request, id):
             reviewForm=ReviewForm()
     except Profile.DoesNotExist:
         raise Http404("This profile does not exist")
-    return render(request,"author.html",{"authorPage":authorPage,'reviewForm': reviewForm, 'ReviewList':ReviewList,'width':width,'height':height,'flag':flag})
+    return render(request,"author.html",{"authorPage":authorPage,'reviewForm': reviewForm, 'ReviewList':ReviewList,'flag':flag})
 
 
 @login_required
