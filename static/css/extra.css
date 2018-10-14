@@ -75,6 +75,14 @@
 .edit-delete:hover{
     color:blue;
 }
+.chat-bubble{
+    text-align: right; 
+    background-color:#F5F5F5;
+}
+.scrollbar{
+    overflow-y: scroll; 
+    height:400px;
+}
 a{
     color:#2B60DE;
 }

@@ -1,12 +1,33 @@
 {% extends 'base.html' %}
 {% block block_body %}	
 {% load widget_tweaks %}
+<script>
+	function updateScroll() {
+
+		var objDiv = document.getElementById("scroll");
+		objDiv.scrollTop = objDiv.scrollHeight;
+	}
+	window.onload = updateScroll;
+
+</script>
 <div class="margins2 top center">
+	<div id="scroll" class = "scrollbar">
 	{% for message in messageList %}
-        <h6>{{ message.sender.user.first_name}}  {{message.sender.user.last_name}}:</h6>
-        {{ message.body }}<br/>
-        <h6>Sent at: {{ message.created }}</h6>
+		{% if message.sender.user == request.user%}
+		<div class = "chat-bubble">
+	        <h6 text-align: left;>{{ message.sender.user.first_name}}  {{message.sender.user.last_name}}:</h6>
+	        {{ message.body }}<br/>
+	        <h6>{{ message.created }}</h6>
+	    </div>
+		{% else %}
+		<div>
+	        <h6>{{ message.sender.user.first_name}}  {{message.sender.user.last_name}}:</h6>
+	        {{ message.body }}<br/>
+	        <h6>{{ message.created }}</h6>
+	    </div>
+        {% endif %}
     {% endfor %}
+    </div>
    <p>Sending Message to: {{ name }}</p>
    <form id="message_form" method="post" action="">
 		{% csrf_token %}

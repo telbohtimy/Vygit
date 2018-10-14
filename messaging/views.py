@@ -20,7 +20,7 @@ def sendMessage(request,id):
 
 	sentMessages = Message.objects.filter(sender = sender, reciever = reciever)
 	recievedMessages = Message.objects.filter(sender = reciever, reciever = sender)
-	messageList = sentMessages.union(recievedMessages).order_by('created')
+	messageList = sentMessages.union(recievedMessages).order_by('created')[:20]
 	if request.method == 'POST':
 		form = MessageForm(data=request.POST)
 		if form.is_valid():
