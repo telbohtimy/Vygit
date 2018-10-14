@@ -2,6 +2,11 @@
 {% block block_body %}	
 {% load widget_tweaks %}
 <div class="margins2 top center">
+	{% for message in messageList %}
+        <h6>{{ message.sender.user.first_name}}  {{message.sender.user.last_name}}:</h6>
+        {{ message.body }}<br/>
+        <h6>Sent at: {{ message.created }}</h6>
+    {% endfor %}
    <p>Sending Message to: {{ name }}</p>
    <form id="message_form" method="post" action="">
 		{% csrf_token %}

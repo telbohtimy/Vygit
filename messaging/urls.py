@@ -4,5 +4,5 @@ from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
-    path('createMessage/<int:id>/', views.createMessage, name='createMessage'),
+    path('sendMessage/<int:id>/', views.sendMessage, name='sendMessage'),
 ]
