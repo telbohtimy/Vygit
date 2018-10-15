@@ -20,7 +20,7 @@
 		</form>
 		{% endif %}
 		{% if user.is_authenticated and authorPage.user != request.user%}
-		<form method="post" action="/messages/sendMessage/{{gamePage.author.id}}/">
+		<form method="post" action="/messages/sendMessage/{{gamePage.author.user.id}}/">
 			{% csrf_token %}			
 			<input class="btn btn-info btnPos2" type="submit" name="Message" value="Message Seller" />
 		</form>

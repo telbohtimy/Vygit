@@ -11,23 +11,25 @@
 
 </script>
 <div class="margins2 top center">
+	{% if messageList%}
 	<div id="scroll" class = "scrollbar">
 	{% for message in messageList %}
-		{% if message.sender.user == request.user%}
+		{% if message.sender == request.user%}
 		<div class = "chat-bubble">
-	        <h6 text-align: left;>{{ message.sender.user.first_name}}  {{message.sender.user.last_name}}:</h6>
+	        <h6 text-align: left;>{{ message.sender.first_name}}  {{message.sender.last_name}}:</h6>
 	        {{ message.body }}<br/>
 	        <h6>{{ message.created }}</h6>
 	    </div>
 		{% else %}
 		<div>
-	        <h6>{{ message.sender.user.first_name}}  {{message.sender.user.last_name}}:</h6>
+	        <h6>{{ message.sender.first_name}}  {{message.sender.last_name}}:</h6>
 	        {{ message.body }}<br/>
 	        <h6>{{ message.created }}</h6>
 	    </div>
         {% endif %}
     {% endfor %}
     </div>
+    {% endif %}
    <p>Sending Message to: {{ name }}</p>
    <form id="message_form" method="post" action="">
 		{% csrf_token %}

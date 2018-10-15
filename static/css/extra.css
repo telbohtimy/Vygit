@@ -23,12 +23,12 @@
 .btnPos1{
     position:fixed; 
     top:110px;
-    right:75px;
+    right:10px;
 }
 .btnPos2{
     position:fixed; 
     top:175px;
-    right:75px;
+    right:10px;
 }
 .margins{
     margin-left:30px;

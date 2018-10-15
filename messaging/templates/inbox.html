@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block block_body %}	
+{% load widget_tweaks %}
+<div class="margins2 top center">
+{% if  messageList%}
+	{% for message in messageList %}
+		{{message}}
+		<h6>-----------------------</h6><br/>
+	{% endfor %}
+
+{% else %}
+<p>You have no messages</p>
+{% endif %}
+	
+</div>
+{% endblock %}
