@@ -9,12 +9,18 @@
 			{% if request.user == message.sender %}
 				<a href="/messages/sendMessage/{{message.reciever.id}}/">{{message.reciever.first_name}} {{message.reciever.last_name}}</a>
 				You: {{ message.body }}<br/>
+				{{ message.created }}
+				<span class="badge badge-primary badge-pill">No New Messages</span>
 			{% else %}
 				<a href="/messages/sendMessage/{{message.sender.id}}/">{{message.sender.first_name}} {{message.sender.last_name}}</a>
 				{{message.sender.first_name}}: {{ message.body }}<br/>
-			{% endif %}
-			{{ message.created }}
-			<span class="badge badge-primary badge-pill">Unread Messages</span>
+				{{ message.created }}
+				{% if not message.read %}
+					<span class="badge badge-primary badge-pill">Unread Messages</span>
+				{% else %}
+					<span class="badge badge-primary badge-pill">No New Messages</span>
+				{% endif %}
+			{% endif %}		
 			
 		</li>	
 		{% endfor %}
