@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% block block_body %}
- <div class="form-group sidebar textWrap">
+
+<script>
+    function refresh() {
+        $.ajax({
+            url: '',
+            success: function(data) {
+                $("#gameList").load(" #gameList");
+            }
+        });
+    }
+    $(function(){
+        refresh();
+        setInterval("refresh()", 5000);
+    });
+</script>
+<div class="form-group sidebar textWrap">
   <h6>Sort By:</h6>
   <ul>
     <li><a href="?sortOrder=newest&q={{query_string}}">Newest Postings</a></li>

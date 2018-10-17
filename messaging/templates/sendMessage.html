@@ -8,26 +8,40 @@
 		objDiv.scrollTop = objDiv.scrollHeight;
 	}
 	window.onload = updateScroll;
+    function refresh() {
+        $.ajax({
+            url: '',
+            success: function(data) {
+                $("#messages").load(" #messages");
+            }
+        });
+    }
+    $(function(){
+        refresh();
+        setInterval("refresh()", 5000);
+    });
 
 </script>
 <div class="margins2 top center">
 	{% if messageList%}
 	<div id="scroll" class = "scrollbar">
-	{% for message in messageList %}
-		{% if message.sender == request.user%}
-		<div class = "chat-bubble">
-	        <h6 text-align: left;>{{ message.sender.first_name}}  {{message.sender.last_name}}:</h6>
-	        {{ message.body }}<br/>
-	        <h6>{{ message.created }}</h6>
-	    </div>
-		{% else %}
-		<div>
-	        <h6>{{ message.sender.first_name}}  {{message.sender.last_name}}:</h6>
-	        {{ message.body }}<br/>
-	        <h6>{{ message.created }}</h6>
-	    </div>
-        {% endif %}
-    {% endfor %}
+	<div id = "messages">
+		{% for message in messageList %}
+			{% if message.sender == request.user%}
+			<div class = "chat-bubble">
+		        <h6 text-align: left;>{{ message.sender.first_name}}  {{message.sender.last_name}}:</h6>
+		        {{ message.body }}<br/>
+		        <h6>{{ message.created }}</h6>
+		    </div>
+			{% else %}
+			<div>
+		        <h6>{{ message.sender.first_name}}  {{message.sender.last_name}}:</h6>
+		        {{ message.body }}<br/>
+		        <h6>{{ message.created }}</h6>
+		    </div>
+	        {% endif %}
+	    {% endfor %}
+	</div>
     </div>
     {% endif %}
    <p>Sending Message to: {{ name }}</p>
