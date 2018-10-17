@@ -9,6 +9,7 @@ import uuid
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
+from django.db.models import Avg, Max, Min
 
 perPage=5
 # Create your views here.
@@ -20,6 +21,7 @@ def sendMessage(request,id):
 	last = reciever.last_name
 	name = first+' '+last
 
+	Message.objects.filter(sender = reciever, reciever = sender).update(read= True)
 	sentMessages = Message.objects.filter(sender = sender, reciever = reciever)
 	recievedMessages = Message.objects.filter(sender = reciever, reciever = sender)
 	messageList = sentMessages.union(recievedMessages).order_by('created')[:20]
@@ -39,6 +41,13 @@ def sendMessage(request,id):
 
 @login_required
 def inbox(request):
-	# messageList = Message.objects.order_by('sender','reciever','-created').distinct('sender', 'reciever')
-	messageList = Message.objects.filter(sender = request.user).values()
+	messageList = []
+	sentList = Message.objects.filter(sender = request.user).values("reciever").distinct()
+	recievedList = Message.objects.filter(reciever = request.user).values("sender").distinct()
+	ids = sentList.union(recievedList)
+	userList = User.objects.filter(id__in=ids)
+	for user in userList.all():
+		sentMessages = Message.objects.filter(sender = request.user, reciever = user)
+		recievedMessages = Message.objects.filter(sender = user, reciever = request.user)
+		messageList.append(sentMessages.union(recievedMessages).order_by('-created')[0])
 	return render(request,'inbox.html', {'messageList': messageList})
